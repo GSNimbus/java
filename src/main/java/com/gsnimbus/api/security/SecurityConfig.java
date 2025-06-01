@@ -13,8 +13,11 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
-    @Autowired
-    private JWTAuthFilter jwtAuthFilter;
+    private final JWTAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JWTAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
