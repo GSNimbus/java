@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 @Entity
-@Table(name = "t_gpMottu_pais")
+@Table(name = "t_nimbus_pais")
 public class Pais {
 
     @Id

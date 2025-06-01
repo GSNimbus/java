@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 @Entity
-@Table(name = "t_gpMottu_estado")
+@Table(name = "t_nimbus_estado")
 public class Estado {
 
     @Id

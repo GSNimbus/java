@@ -1,6 +1,6 @@
 package com.gsnimbus.api.repository;
 
-import gp.moto.challenge_api.model.Pais;
+import com.gsnimbus.api.model.Pais;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

@@ -8,7 +8,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 @Entity
-@Table(name = "t_gpMottu_cidade")
+@Table(name = "t_nimbus_cidade")
 public class Cidade {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Data
 @Entity
-@Table(name = "t_gpMottu_endereco")
+@Table(name = "t_nimbus_endereco")
 public class Endereco {
 
     @Id
@@ -32,5 +32,5 @@ public class Endereco {
 
     @ManyToOne
     @JoinColumn(name = "id_cidade")
-    private Cidade idCidade;
+    private Bairro idCidade;
 }
