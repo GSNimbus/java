@@ -51,4 +51,14 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
+    @ExceptionHandler(ApiFetchErrorException.class)
+    public ResponseEntity<String> handleApiFetchError(ApiFetchErrorException e) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
+    }
+
+    @ExceptionHandler(ConversionErrorException.class)
+    public ResponseEntity<String> handleConversionError(ConversionErrorException e) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+
 }

@@ -35,7 +35,7 @@ public class PrevisaoService {
     @Transactional
     public Previsao save(PrevisaoDTO dto){
         cleanCache();
-        return previsaoRepository.save(previsaoMapper.toEntity(dto.currentDto()));
+        return previsaoRepository.save(previsaoMapper.toEntity(dto));
     }
 
     @Transactional
