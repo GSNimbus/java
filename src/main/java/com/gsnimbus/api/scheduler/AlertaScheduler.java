@@ -1,37 +1,31 @@
 package com.gsnimbus.api.scheduler;
 
-import com.gsnimbus.api.service.AlertaService;
-import com.gsnimbus.api.service.BairroService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
+import com.gsnimbus.api.service.BairroService;
+import com.gsnimbus.api.service.PrevisaoApiService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class AlertaScheduler {
 
     private final BairroService bairroService;
-    private final AlertaService alertaService;
+    private final PrevisaoApiService previsaoApiService;
+    // private final AlertaService alertaService;
 
-
-    @Scheduled(fixedRate = 3600 * 60)
-    public void executeAlert(){
-//        bairroService.findAll().stream().map((bairro) -> {
-//
-//        })
-//        try (HttpClient httpClient = HttpClient.newHttpClient()) {
-//            HttpRequest request = HttpRequest.newBuilder()
-//                    .uri(URI.create("https://api.exemplo.com/dados"))
-//                    .GET()
-//                    .header("Accept", "application/json")
-//                    .build();
-//        }
-        System.out.println("O Gustavo é muito bonito né, fala sério!");
-
+    @Scheduled(fixedRate = 60 * 1000 * 60)
+    public void executePrevisao() {
+        log.info("Executando scheduler...");
+        bairroService.findAll().forEach(bairro -> {
+            log.info("Executando bairro {}", bairro.getNome());
+            previsaoApiService.savePrevisao(bairro);
+            System.out.printf("Previsão salva no bairro %s%n", bairro.getNome());
+        });
     }
 
 }

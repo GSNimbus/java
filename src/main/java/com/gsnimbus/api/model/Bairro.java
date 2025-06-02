@@ -21,7 +21,7 @@ public class Bairro {
     private Cidade idCidade;
 
     @ManyToOne
-    @JoinColumn(name = "id_localizacao_id")
+    @JoinColumn(name = "id_localizacao")
     private Localizacao idLocalizacao;
 
 }
