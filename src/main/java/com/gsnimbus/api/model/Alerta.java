@@ -3,6 +3,8 @@ package com.gsnimbus.api.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Date;
 
 @Data
@@ -25,6 +27,8 @@ public class Alerta {
 
     @PrePersist
     protected void onCreate() {
-        this.horarioAlerta = new Date();
+        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
+        ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
+        this.horarioAlerta = Date.from(zonedDateTime.toInstant());
     }
 }

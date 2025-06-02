@@ -1,4 +1,4 @@
-package com.gsnimbus.api.dto;
+package com.gsnimbus.api.dto.alerta; // Pacote atualizado
 
 import java.util.Date;
 
@@ -8,6 +8,5 @@ public record AlertaDTO(
     String risco,
     TipoAlerta tipo,
     String mensagem,
-    Date horarioAlerta,
     Long idLocalizacao
 ) {}

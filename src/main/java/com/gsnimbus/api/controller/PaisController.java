@@ -3,6 +3,7 @@ package com.gsnimbus.api.controller;
 import com.gsnimbus.api.dto.endereco.pais.PaisDto;
 import com.gsnimbus.api.model.Pais;
 import com.gsnimbus.api.service.PaisService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/pais")
 @RequiredArgsConstructor
+@Tag(name = "Países", description = "Endpoints para gerenciamento de países")
 public class PaisController {
 
     private final PaisService paisService;
