@@ -8,20 +8,11 @@ import org.mapstruct.*;
 public interface EstadoMapper {
     @Mapping(target = "nmEstado", source = "nome")
     @Mapping(target = "idEstado", ignore = true)
+    @Mapping(target = "idPais.idPais", source = "idPais")
     Estado toEntity(EstadoDto dto);
     @Mapping(target = "nome", source = "nmEstado")
+    @Mapping(target = "idPais", source = "idPais.idPais")
     EstadoDto toDto(Estado estado);
-
-    default Pais mapIdToPais(Long id){
-        if (id == null) return null;
-        Pais pais = new Pais();
-        pais.setIdPais(id);
-        return pais;
-    }
-
-    default Long mapPaisToId(Pais pais){
-        return pais != null ? pais.getIdPais() : null;
-    }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(EstadoDto estadoDto, @MappingTarget Estado estado);

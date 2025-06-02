@@ -24,15 +24,5 @@ public interface AlertaMapper {
     @Mapping(source = "idLocalizacao", target = "idLocalizacao.id")
     void updateEntityFromDto(AlertaDTO dto, @MappingTarget Alerta entity);
 
-    default Localizacao mapLongToLocalizacao(Long id) {
-        if (id == null) return null;
-        Localizacao localizacao = new Localizacao();
-        localizacao.setId(id);
-        return localizacao;
-    }
-
-    default Long mapLocalizacaoToLong(Localizacao localizacao) {
-        return localizacao != null ? localizacao.getId() : null;
-    }
 }
 

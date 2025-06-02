@@ -8,21 +8,12 @@ import org.mapstruct.*;
 public interface CidadeMapper {
     @Mapping(target = "idCidade", ignore = true)
     @Mapping(target = "nmCidade", source = "nome")
+    @Mapping(target = "idEstado.idEstado", source = "idEstado")
     Cidade toEntity(CidadeDto dto);
 
     @Mapping(target = "nome", source = "nmCidade")
+    @Mapping(target = "idEstado", source = "idEstado.idEstado")
     CidadeDto toDto(Cidade entity);
-
-    default Long mapEstadoToId(Estado estado){
-        return estado != null ? estado.getIdEstado() : null;
-    }
-
-    default Estado mapIdToEstado(Long id){
-        if (id == null) return null;
-        Estado estado = new Estado();
-        estado.setIdEstado(id);
-        return estado;
-    }
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(CidadeDto dto, @MappingTarget Cidade cidade);

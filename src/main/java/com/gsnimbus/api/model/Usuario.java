@@ -14,4 +14,7 @@ public class Usuario {
     private Long id;
     private String username;
     private String password;
+    @OneToOne
+    @JoinColumn(name = "id_localizacao")
+    private Localizacao localizacao;
 }

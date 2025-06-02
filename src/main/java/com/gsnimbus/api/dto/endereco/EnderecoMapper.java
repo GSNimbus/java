@@ -8,7 +8,7 @@ import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface EnderecoMapper {
-    @Mapping(target = "idBairro", source = "bairro")
+    @Mapping(target = "idBairro.id", source = "bairro")
     @Mapping(target = "nrLogradouro", source = "numLogradouro")
     @Mapping(target = "nmLogradouro", source = "logradouro")
     @Mapping(target = "idEndereco", ignore = true)
@@ -16,37 +16,16 @@ public interface EnderecoMapper {
 
     @Mapping(target = "numLogradouro", source = "nrLogradouro")
     @Mapping(target = "logradouro", source = "nmLogradouro")
-    @Mapping(target = "bairro", source = "idBairro")
+    @Mapping(target = "bairro", source = "idBairro.id")
     EnderecoDto toDto(Endereco entity);
 
     @Mapping(target = "nrLogradouro", source = "numLogradouro")
     @Mapping(target = "nmLogradouro", source = "logradouro")
-    @Mapping(target = "idBairro", source = "bairro")
+    @Mapping(target = "idBairro.id", source = "bairro")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(EnderecoDto dto, @MappingTarget Endereco entity);
 
 
 
-    default Bairro mapIdToBairro(Long id) {
-        if (id == null) return null;
-        Bairro bairro = new Bairro();
-        bairro.setId(id);
-        return bairro;
-    }
-
-    default Long mapBairroToId(Bairro bairro) {
-        return bairro != null ? bairro.getId() : null;
-    }
-
-    default Localizacao mapIdToLocalizacao(Long id) {
-        if (id == null) return null;
-        Localizacao localizacao = new Localizacao();
-        localizacao.setId(id);
-        return localizacao;
-    }
-
-    default Long mapLocalizacaoToId(Localizacao localizacao) {
-        return localizacao != null ? localizacao.getId() : null;
-    }
 
 }
