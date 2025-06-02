@@ -21,14 +21,14 @@ public class JWTAuthFilter extends OncePerRequestFilter {
 
     private final OpenAPI configurarSwagger;
 
-    @Autowired
-    private JWTUtil jwtUtil;
+    private final JWTUtil jwtUtil;
 
-    @Autowired
-    private UserDetailsService usuario;
+    private final UserDetailsService usuario;
 
-    JWTAuthFilter(OpenAPI configurarSwagger) {
+    JWTAuthFilter(OpenAPI configurarSwagger, JWTUtil jwtUtil, UserDetailsService usuario) {
         this.configurarSwagger = configurarSwagger;
+        this.jwtUtil = jwtUtil;
+        this.usuario = usuario;
     }
 
     @Override

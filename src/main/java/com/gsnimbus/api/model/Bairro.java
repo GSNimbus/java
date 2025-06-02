@@ -19,4 +19,9 @@ public class Bairro {
     @ManyToOne
     @JoinColumn(name = "id_cidade")
     private Cidade idCidade;
+
+    @ManyToOne
+    @JoinColumn(name = "id_localizacao_id")
+    private Localizacao idLocalizacao;
+
 }
