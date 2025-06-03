@@ -31,10 +31,26 @@ public class PaisService {
         return paisRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("País não encontrado!"));
     }
 
+    @Transactional(readOnly = true)
+    public Pais findByName(String nome) {
+        return paisRepository.findByNmPais(nome).orElse(null);
+    }
+
     @Transactional
     public Pais save(PaisDto dto) {
         cleanCache();
         return paisRepository.save(paisMapper.toEntity(dto));
+    }
+
+    @Transactional
+    public Pais saveOrFind(String nome) {
+        Pais paisSalvo = findByName(nome);
+        if (paisSalvo != null) {
+            return paisSalvo;
+        }
+
+        PaisDto dto = new PaisDto(nome);
+        return save(dto);
     }
 
     @Transactional

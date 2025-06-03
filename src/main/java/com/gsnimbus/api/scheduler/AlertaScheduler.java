@@ -1,31 +1,31 @@
 package com.gsnimbus.api.scheduler;
 
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
-
+import com.gsnimbus.api.model.Alerta;
+import com.gsnimbus.api.model.Previsao;
+import com.gsnimbus.api.service.AlertaAIService;
 import com.gsnimbus.api.service.BairroService;
-import com.gsnimbus.api.service.PrevisaoApiService;
-
+import com.gsnimbus.api.service.PrevisaoBairroService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 @Log4j2
 public class AlertaScheduler {
-
+    private final AlertaAIService alertaAIService;
+    private final PrevisaoBairroService previsaoBairroService;
     private final BairroService bairroService;
-    private final PrevisaoApiService previsaoApiService;
-    // private final AlertaService alertaService;
 
-    @Scheduled(fixedRate = 60 * 1000 * 60)
-    public void executePrevisao() {
-        log.info("Executando scheduler...");
-        bairroService.findAll().forEach(bairro -> {
-            log.info("Executando bairro {}", bairro.getNome());
-            previsaoApiService.savePrevisao(bairro);
-            System.out.printf("Previsão salva no bairro %s%n", bairro.getNome());
-        });
-    }
-
+//    @Scheduled(fixedRate = 60 * 1000 * 60, initialDelay = 1000 * 60 * 2)
+//    public void executeAlerta(){
+//        bairroService.findAll().forEach(bairro -> {
+//            Previsao previsao = previsaoBairroService.findLastPrevisaoByBairro(bairro.getId());
+//            log.info("Tá indo a previsão por ultimo, amém god! \n\n\nPrevisão por último: {}", previsao);
+//            Alerta alerta = alertaAIService.processarAlerta(previsao, bairro.getId());
+//            log.info("Alerta criado com sucesso: {}", alerta);
+//            log.info("Bairro com o alerta: {}", bairro.getNome());
+//        });
+//    }
 }

@@ -2,6 +2,7 @@ package com.gsnimbus.api.controller;
 
 import com.gsnimbus.api.dto.alerta.AlertaDTO;
 import com.gsnimbus.api.model.Alerta;
+import com.gsnimbus.api.service.AlertaBairroService;
 import com.gsnimbus.api.service.AlertaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 public class AlertaController {
 
     private final AlertaService alertaService;
-
+    private final AlertaBairroService alertaBairroService;
     @GetMapping
     public ResponseEntity<List<Alerta>> findAll() {
         return ResponseEntity.ok(alertaService.findAll());
@@ -28,6 +29,17 @@ public class AlertaController {
     public ResponseEntity<Alerta> findById(@PathVariable Long id) {
         return ResponseEntity.ok(alertaService.findById(id));
     }
+
+    @GetMapping("/bairro/{idBairro}")
+    public ResponseEntity<List<Alerta>> findAllAlertaByBairro(@PathVariable Long idBairro){
+        return ResponseEntity.ok(alertaBairroService.findAllAlertaByBairro(idBairro));
+    }
+
+    @GetMapping("/bairro/{idBairro}/hoje")
+    public ResponseEntity<List<Alerta>> findAllAlertaByBairroToday(@PathVariable Long idBairro){
+        return ResponseEntity.ok(alertaBairroService.findAllAlertaByBairroToday(idBairro));
+    }
+
 
     @PostMapping
     public ResponseEntity<Alerta> save(@RequestBody AlertaDTO dto) {

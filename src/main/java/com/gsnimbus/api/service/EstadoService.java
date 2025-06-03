@@ -4,6 +4,7 @@ import com.gsnimbus.api.dto.endereco.estado.EstadoDto;
 import com.gsnimbus.api.dto.endereco.estado.EstadoMapper;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
 import com.gsnimbus.api.model.Estado;
+import com.gsnimbus.api.model.Pais;
 import com.gsnimbus.api.repository.EstadoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -31,10 +32,39 @@ public class EstadoService {
         return estadoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Estado não encontrado!"));
     }
 
+    @Transactional(readOnly = true)
+    public Estado findByName(String nome) {
+        return estadoRepository.findByNmEstado(nome).orElse(null);
+    }
+
     @Transactional
     public Estado save(EstadoDto dto) {
         cleanCache();
         return estadoRepository.save(estadoMapper.toEntity(dto));
+    }
+
+    @Transactional
+    public Estado saveOrFind(String nome) {
+        Estado estadoSalvo = findByName(nome);
+        if (estadoSalvo != null) {
+            return estadoSalvo;
+        }
+
+        // TODO: Verificar como obter o idPais correto
+        Long idPais = 1L; // Valor default para Brasil
+        EstadoDto dto = new EstadoDto(idPais, nome);
+        return save(dto);
+    }
+
+    @Transactional
+    public Estado saveOrFind(String nome, Pais pais) {
+        Estado estadoSalvo = findByName(nome);
+        if (estadoSalvo != null) {
+            return estadoSalvo;
+        }
+
+        EstadoDto dto = new EstadoDto(pais.getIdPais(), nome);
+        return save(dto);
     }
 
     @Transactional

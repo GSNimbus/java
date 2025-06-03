@@ -13,15 +13,12 @@ public interface AlertaMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "horarioAlerta", ignore = true)
-    @Mapping(source = "idLocalizacao", target = "idLocalizacao.id")
     Alerta toEntity(AlertaDTO dto);
 
-    @Mapping(source = "idLocalizacao.id", target = "idLocalizacao")
     AlertaDTO toDto(Alerta entity);
 
     @Mapping(target = "horarioAlerta", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    @Mapping(source = "idLocalizacao", target = "idLocalizacao.id")
     void updateEntityFromDto(AlertaDTO dto, @MappingTarget Alerta entity);
 
 }

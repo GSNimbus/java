@@ -31,10 +31,26 @@ public class CidadeService {
         return cidadeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Cidade não encontrada!"));
     }
 
+    @Transactional(readOnly = true)
+    public Cidade findByName(String nome) {
+        return cidadeRepository.findByNmCidade(nome).orElse(null);
+    }
+
     @Transactional
     public Cidade save(CidadeDto dto) {
         cleanCache();
         return cidadeRepository.save(cidadeMapper.toEntity(dto));
+    }
+
+    @Transactional
+    public Cidade saveOrFind(String nome, Long idEstado) {
+        Cidade cidadeSalva = findByName(nome);
+        if (cidadeSalva != null) {
+            return cidadeSalva;
+        }
+
+        CidadeDto dto = new CidadeDto(nome, idEstado);
+        return save(dto);
     }
 
     @Transactional

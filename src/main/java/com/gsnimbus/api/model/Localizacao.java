@@ -21,15 +21,15 @@ public class Localizacao {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Digits(integer = 3, fraction = 6)
+    @Digits(integer = 3, fraction = 5)
     @DecimalMin("-180.0")
     @DecimalMax("180.0")
-    @Column(precision = 9, scale = 6, name = "nr_longitude")
+    @Column(precision = 8, scale = 5, name = "nr_longitude")
     private BigDecimal longitude;
 
-    @Digits(integer = 2, fraction = 6)
+    @Digits(integer = 2, fraction = 5)
     @DecimalMin("-90.0")
     @DecimalMax("90.0")
-    @Column(precision = 8, scale = 6, name = "nr_latitude")
+    @Column(precision = 7, scale = 5, name = "nr_latitude")
     private BigDecimal latitude;
 }

@@ -1,9 +1,11 @@
 package com.gsnimbus.api.service;
 
+import com.gsnimbus.api.dto.geocoding.GeocodingApiDto;
+import com.gsnimbus.api.dto.geocoding.ReverseGeocodingApiDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoMapper;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
-import com.gsnimbus.api.model.Localizacao;
+import com.gsnimbus.api.model.*;
 import com.gsnimbus.api.repository.LocalizacaoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,6 +20,11 @@ import java.util.List;
 public class LocalizacaoService {
     private final LocalizacaoRepository localizacaoRepository;
     private final LocalizacaoMapper localizacaoMapper;
+    private final GeocodingService geocodingService;
+    private final BairroService bairroService;
+    private final PaisService paisService;
+    private final EstadoService estadoService;
+    private final CidadeService cidadeService;
 
     @Cacheable(value = "findAllLocalizacao")
     @Transactional(readOnly = true)
@@ -31,10 +38,46 @@ public class LocalizacaoService {
         return localizacaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Localização não encontrada!"));
     }
 
+    @Transactional(readOnly = true)
+    public Localizacao findByLocalizacao(LocalizacaoDto dto) {
+        return localizacaoRepository.findByLocalizacao(dto.getLatitude(), dto.getLongitude()).orElse(null);
+    }
+
+    @Transactional
+    public Localizacao saveOrFind(LocalizacaoDto dto){
+        Localizacao localizacaoSalva = findByLocalizacao(dto);
+        if (localizacaoSalva != null) {
+            return localizacaoSalva;
+        }
+        ReverseGeocodingApiDto reverseGeocodingApiDto = geocodingService.getAddressFromLocation(dto);
+        String bairroApi = reverseGeocodingApiDto.getAddress().getSuburb();
+        Bairro bairro = bairroService.findByName(bairroApi);
+
+        if (bairro != null){
+            return bairro.getIdLocalizacao();
+        }
+
+        Pais pais = paisService.saveOrFind(reverseGeocodingApiDto.getAddress().getCountry());
+        Estado estado = estadoService.saveOrFind(reverseGeocodingApiDto.getAddress().getState());
+        Cidade cidade = cidadeService.saveOrFind(reverseGeocodingApiDto.getAddress().getCity(), estado.getIdEstado());
+        Localizacao localizacao = save(dto);
+        bairro = bairroService.save(bairroApi, cidade.getIdCidade(), localizacao.getId());
+        return localizacao;
+    }
+
     @Transactional
     public Localizacao save(LocalizacaoDto dto) {
         cleanCache();
         return localizacaoRepository.save(localizacaoMapper.toEntity(dto));
+    }
+
+
+    public ReverseGeocodingApiDto testeGeoReversa(LocalizacaoDto dto){
+        return geocodingService.getAddressFromLocation(dto);
+    }
+
+    public GeocodingApiDto testeGeo(String endereco) {
+        return geocodingService.getCoordinatesFromAddress(endereco);
     }
 
     @Transactional
