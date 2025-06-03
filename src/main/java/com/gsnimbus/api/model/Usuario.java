@@ -12,9 +12,13 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_usuario")
     private Long id;
+    @Column(name = "nm_usuario")
     private String username;
+    @Column(name = "nm_email")
+    private String email;
+    @Column(name = "nm_senha")
     private String password;
     @OneToOne
-    @JoinColumn(name = "id_localizacao")
-    private Localizacao localizacao;
+    @JoinColumn(name = "id_endereco")
+    private Endereco endereco;
 }

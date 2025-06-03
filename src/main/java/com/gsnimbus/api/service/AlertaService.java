@@ -3,7 +3,7 @@ package com.gsnimbus.api.service;
 import com.gsnimbus.api.dto.alerta.AlertaDTO;
 import com.gsnimbus.api.dto.alerta.AlertaMapper;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
-import com.gsnimbus.api.model.Alerta;
+import com.gsnimbus.api.model.*;
 import com.gsnimbus.api.repository.AlertaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
@@ -18,6 +18,8 @@ import java.util.List;
 public class AlertaService {
     private final AlertaRepository alertaRepository;
     private final AlertaMapper alertaMapper;
+
+    private final PrevisaoBairroService previsaoBairroService;
 
     @Cacheable(value = "findAllAlerta")
     @Transactional(readOnly = true)
@@ -60,5 +62,11 @@ public class AlertaService {
         System.out.println("Limpando cache de alerta...");
     }
 
-}
+    /**
+     * Gera um alerta automático para uma localização, obtendo a previsão mais recente associada a ela
+     * @param bairro Bairro para a qual gerar o alerta
+     * @return Alerta gerado
+     */
 
+
+}

@@ -8,6 +8,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
+import com.gsnimbus.api.service.events.PrevisaoCriadaEvent;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -30,14 +32,7 @@ public class PrevisaoApiService {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
     private static final ObjectMapper MAPPER = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
     private final PrevisaoService previsaoService;
-    private final BairroService bairroService;
-
-
-    public Previsao savePrevisao(Long idBairro){
-        log.info("iniciando previsao...");
-        Bairro bairro = bairroService.findById(idBairro);
-        return getPrevisao(bairro);
-    }
+    private final ApplicationEventPublisher publisher;
 
     private Previsao getPrevisao(Bairro bairro) {
         Localizacao localizacao = bairro.getIdLocalizacao();
@@ -66,9 +61,11 @@ public class PrevisaoApiService {
         }
 
         log.info("Mapping bem-sucedido!");
-        log.info("Salvando previsão no bando...");
+        log.info("Salvando previsão no banco...");
         log.info("Objeto previsaoDTO: {} \n\n\n\n", previsaoDTO);
-        return previsaoService.save(previsaoDTO);
+        Previsao previsao = previsaoService.save(previsaoDTO, bairro.getId());
+        publisher.publishEvent(new PrevisaoCriadaEvent(previsao, bairro.getId()));
+        return previsao;
     }
 
     public Previsao savePrevisao(Bairro idBairro){

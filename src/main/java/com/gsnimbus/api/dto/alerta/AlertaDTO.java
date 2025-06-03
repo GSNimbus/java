@@ -1,12 +1,14 @@
-package com.gsnimbus.api.dto.alerta; // Pacote atualizado
+package com.gsnimbus.api.dto.alerta;
 
-import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.gsnimbus.api.model.TipoAlerta;
+import lombok.Data;
 
-public record AlertaDTO(
-    String risco,
-    TipoAlerta tipo,
-    String mensagem,
-    Long idLocalizacao
-) {}
+@JsonIgnoreProperties(ignoreUnknown = true)
+@Data
+public class AlertaDTO {
+    String risco;
+    TipoAlerta tipo;
+    String mensagem;
+}

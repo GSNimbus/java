@@ -2,11 +2,11 @@ package com.gsnimbus.api.repository;
 
 import com.gsnimbus.api.model.Pais;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@Repository
 public interface PaisRepository extends JpaRepository<Pais, Long> {
-    @Query("select p from Pais p where p.nmPais = :nome")
-    Optional<Pais> findByName(String nome);
+    Optional<Pais> findByNmPais(String nome);
 }

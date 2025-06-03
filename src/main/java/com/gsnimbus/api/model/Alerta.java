@@ -3,9 +3,8 @@ package com.gsnimbus.api.model;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
-import java.util.Date;
 
 @Data
 @Entity
@@ -19,16 +18,12 @@ public class Alerta {
     @Column(name = "tipo_alerta")
     private TipoAlerta tipo;
     private String mensagem;
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date horarioAlerta;
-    @ManyToOne
-    @JoinColumn(name = "id_localizacao")
-    private Localizacao idLocalizacao;
+
+    @Column(name = "horario_alerta")
+    private LocalDateTime horarioAlerta;
 
     @PrePersist
     protected void onCreate() {
-        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
-        ZonedDateTime zonedDateTime = ZonedDateTime.now(zoneId);
-        this.horarioAlerta = Date.from(zonedDateTime.toInstant());
+        this.horarioAlerta = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));
     }
 }

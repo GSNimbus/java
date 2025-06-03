@@ -28,6 +28,7 @@ public interface EstadoMapper {
     }
 
 
+    @Mapping(target = "nmEstado", source = "nome")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(EstadoDto estadoDto, @MappingTarget Estado estado);
 }

@@ -13,6 +13,7 @@ public interface CidadeMapper {
     @Mapping(target = "nome", source = "nmCidade")
     CidadeDto toDto(Cidade entity);
 
+    @Mapping(target = "nmCidade", source = "nome")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(CidadeDto dto, @MappingTarget Cidade cidade);
 
