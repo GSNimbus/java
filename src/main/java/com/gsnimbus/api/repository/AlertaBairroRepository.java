@@ -17,7 +17,8 @@ public interface AlertaBairroRepository extends JpaRepository<AlertaBairro, Long
     @Query(value = "SELECT ab.alerta FROM AlertaBairro ab WHERE ab.bairro.id = :idBairro ORDER BY ab.alerta.id DESC LIMIT 1")
     Alerta findLastAlertaByBairro (@Param("idBairro") Long idBairro);
 
-    List<Alerta> findAllAlertaByBairro(Bairro bairro);
+    @Query("SELECT ab.alerta FROM AlertaBairro ab WHERE ab.bairro = :bairro")
+    List<Alerta> findAllAlertaByBairro(@Param("bairro") Bairro bairro);
 
     @Query("SELECT ab.alerta FROM AlertaBairro ab WHERE ab.bairro.id = :idBairro " +
            "AND ab.alerta.horarioAlerta >= :startOfDay AND ab.alerta.horarioAlerta <= :endOfDay " +

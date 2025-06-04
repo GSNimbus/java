@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/usuario")
 @RequiredArgsConstructor
 @Tag(name = "Usuarios", description = "Endpoints para gerenciamento de usuários")
 public class UsuarioController {

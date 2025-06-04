@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/alertas")
+@RequestMapping("/alerta")
 @RequiredArgsConstructor
 @Tag(name = "Alertas", description = "Endpoints para gerenciamento de alertas")
 public class AlertaController {

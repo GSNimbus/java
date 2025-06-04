@@ -3,6 +3,7 @@ package com.gsnimbus.api.controller;
 import com.gsnimbus.api.dto.previsao.api.PrevisaoDTO;
 import com.gsnimbus.api.dto.previsao.api.PrevisaoMapper;
 import com.gsnimbus.api.model.Previsao;
+import com.gsnimbus.api.service.PrevisaoBairroService;
 import com.gsnimbus.api.service.PrevisaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
@@ -19,19 +20,23 @@ import java.util.List;
 public class PrevisaoController {
 
     private final PrevisaoService previsaoService;
+    private final PrevisaoBairroService previsaoBairroService;
 
 
-    @Cacheable(value = "findAllPrevisao")
-    @Transactional(readOnly = true)
+    @GetMapping
     public ResponseEntity<List<Previsao>> findAll(){
         return ResponseEntity.ok(previsaoService.findAll());
     }
 
-    @Cacheable(value = "findByIdPrevisao", key = "#id")
-    public ResponseEntity<Previsao> findById(Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<Previsao> findById(@PathVariable Long id){
         return ResponseEntity.ok(previsaoService.findById(id));
     }
 
+    @GetMapping("/bairro/{idBairro}")
+    public ResponseEntity<Previsao> findLastPrevisaoPorBairro(@PathVariable Long idBairro) {
+        return ResponseEntity.ok(previsaoBairroService.findLastPrevisaoByBairro(idBairro));
+    }
     @PostMapping
     public ResponseEntity<Previsao> save(@RequestBody PrevisaoDTO previsaoDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(previsaoService.save(previsaoDTO));

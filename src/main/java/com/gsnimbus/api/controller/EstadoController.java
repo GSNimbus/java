@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/estados")
+@RequestMapping("/estado")
 @RequiredArgsConstructor
 @Tag(name = "Estados", description = "Endpoints para gerenciamento de estados")
 public class EstadoController {
