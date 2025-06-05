@@ -19,6 +19,9 @@ public interface EnderecoMapper {
     @Mapping(target = "bairro", source = "idBairro.id")
     EnderecoDto toDto(Endereco entity);
 
+    @Mapping(target = "logradouro", source = "nomeLogradouro")
+    EnderecoDto toDto(NovoEnderecoDto dto);
+
     @Mapping(target = "nrLogradouro", source = "numLogradouro")
     @Mapping(target = "nmLogradouro", source = "logradouro")
     @Mapping(target = "idBairro.id", source = "bairro")

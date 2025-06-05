@@ -57,13 +57,13 @@ public class EstadoService {
     }
 
     @Transactional
-    public Estado saveOrFind(String nome, Pais pais) {
+    public Estado saveOrFind(String nome, Long idPais) {
         Estado estadoSalvo = findByName(nome);
         if (estadoSalvo != null) {
             return estadoSalvo;
         }
 
-        EstadoDto dto = new EstadoDto(pais.getIdPais(), nome);
+        EstadoDto dto = new EstadoDto(idPais, nome);
         return save(dto);
     }
 

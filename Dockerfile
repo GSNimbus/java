@@ -20,8 +20,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
-#CHAVE DE API DO LOCATIONIQ
-ENV CHAVE_API pk.95814fcfc410c0ac594ef0125a69bbd0
+ENV CHAVE_API ""
 
 EXPOSE 8080
 

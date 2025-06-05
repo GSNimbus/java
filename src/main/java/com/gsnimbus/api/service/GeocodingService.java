@@ -74,9 +74,8 @@ public class GeocodingService {
 
         log.info("Mapping bem-sucedido! Encontrados {} resultados", geocodingResults.size());
         log.info("Retornando o primeiro resultado da lista");
-
         // Retorna apenas o primeiro resultado conforme solicitado
-        return geocodingResults.get(0);
+        return geocodingResults.getFirst();
     }
 
     /**

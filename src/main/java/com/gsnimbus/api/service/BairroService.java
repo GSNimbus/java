@@ -3,11 +3,9 @@ package com.gsnimbus.api.service;
 import com.gsnimbus.api.dto.endereco.bairro.BairroDto;
 import com.gsnimbus.api.dto.endereco.bairro.BairroMapper;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
-import com.gsnimbus.api.model.Alerta;
 import com.gsnimbus.api.model.Bairro;
 import com.gsnimbus.api.model.Cidade;
 import com.gsnimbus.api.model.Localizacao;
-import com.gsnimbus.api.model.Previsao;
 import com.gsnimbus.api.repository.BairroRepository;
 import com.gsnimbus.api.repository.CidadeRepository;
 import com.gsnimbus.api.repository.LocalizacaoRepository;
@@ -16,7 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -48,26 +45,7 @@ public class BairroService {
         return bairroRepository.findByNomeIgnoreCase(nomeBairro).orElse(null);
     }
 
-    /**
-     * Busca um bairro pela sua localização
-     * @param localizacao Localização para buscar o bairro
-     * @return Bairro encontrado ou null se não existir
-     */
-    @Transactional(readOnly = true)
-    public Bairro findByLocalizacao(Localizacao localizacao) {
-        if (localizacao == null || localizacao.getId() == null) {
-            return null;
-        }
 
-        return bairroRepository.findByIdLocalizacao(localizacao);
-    }
-
-    /**
-     * Salva um novo bairro ou retorna um existente com o mesmo nome e cidade
-     * Ao salvar, gera alertas e previsões para o bairro
-     * @param dto Dados do bairro a ser salvo
-     * @return Bairro salvo ou encontrado
-     */
     @Transactional
     public Bairro saveOrFind(BairroDto dto) {
         cleanCache();
