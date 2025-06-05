@@ -6,6 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+import com.gsnimbus.api.dto.alerta.AlertaInputDto;
+import com.gsnimbus.api.dto.previsao.api.PrevisaoDTO;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -32,17 +34,17 @@ public class AlertaAIService {
 
     private final AlertaService alertaService;
 
-    public Alerta processarAlerta(Previsao previsao, Long idBairro) {
+    public Alerta processarAlerta(Previsao inputDto, Long idBairro) {
         log.info("Iniciando processamento de alerta com IA...");
 
-        if (previsao == null) {
+        if (inputDto == null) {
             throw new IllegalArgumentException("Objeto Previsao não pode ser nulo para processar alerta para o bairro ID!");
         }
 
         String response;
         try {
             log.info("Enviando previsão para a API de alertas");
-            response = enviarPrevisaoParaAPI(previsao);
+            response = enviarPrevisaoParaAPI(inputDto);
         } catch (IOException | InterruptedException e) {
             throw new ApiFetchErrorException("Erro ao comunicar com serviço de alerta: " + e.getMessage());
         }
@@ -56,8 +58,8 @@ public class AlertaAIService {
         try {
             log.info("Convertendo resposta JSON para AlertaDTO...");
             alertaDTO = MAPPER.readValue(response, AlertaDTO.class);
-            log.info("Objeto AlertaDTO: {}", alertaDTO);
             alertaDTO.setIdBairro(idBairro);
+            log.info("Objeto AlertaDTO: {}", alertaDTO);
         } catch (IOException e) {
             throw new ConversionErrorException("Erro ao converter resposta JSON para AlertaDTO: " + e.getMessage());
         }
@@ -67,10 +69,10 @@ public class AlertaAIService {
 
 
 
-    private String enviarPrevisaoParaAPI(Previsao previsao) throws IOException, InterruptedException {
+    private String enviarPrevisaoParaAPI(Previsao inputDto) throws IOException, InterruptedException {
         log.info("Preparando requisição para API de alertas...");
 
-        String previsaoJson = MAPPER.writeValueAsString(previsao);
+        String previsaoJson = MAPPER.writeValueAsString(inputDto);
         log.info("Objeto previsão serializado: {}", previsaoJson);
 
         HttpRequest request = HttpRequest.newBuilder()

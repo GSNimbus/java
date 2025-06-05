@@ -1,5 +1,6 @@
 package com.gsnimbus.api.service.events;
 
+import com.gsnimbus.api.dto.alerta.AlertaInputDto;
 import com.gsnimbus.api.service.AlertaAIService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
@@ -11,7 +12,7 @@ public class PrevisaoListener {
     private final AlertaAIService alertaAIService;
 
     @EventListener
-    public void aoSalvarPrevisao(PrevisaoCriadaEvent event){
+    public void aoSalvarPrevisao(PrevisaoCriadaEvent event) {
         alertaAIService.processarAlerta(event.getPrevisao(), event.getIdBairro());
     }
 }
