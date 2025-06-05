@@ -3,6 +3,7 @@ package com.gsnimbus.api.controller;
 import com.gsnimbus.api.dto.geocoding.GeocodingApiDto;
 import com.gsnimbus.api.dto.geocoding.ReverseGeocodingApiDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoDto;
+import com.gsnimbus.api.dto.localizacao.LocalizacaoNovaProjection;
 import com.gsnimbus.api.model.Localizacao;
 import com.gsnimbus.api.service.LocalizacaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/localizacoes")
+@RequestMapping("/localizacao")
 @RequiredArgsConstructor
 @Tag(name = "Localizações", description = "Endpoints para gerenciamento de localizações")
 public class LocalizacaoController {
@@ -33,19 +34,19 @@ public class LocalizacaoController {
 
 
     @PostMapping
-    public ResponseEntity<Localizacao> saveOrFind(@RequestBody LocalizacaoDto dto) {
+    public ResponseEntity<LocalizacaoNovaProjection> saveOrFind(@RequestBody LocalizacaoDto dto) {
         return ResponseEntity.status(HttpStatus.OK).body(localizacaoService.saveOrFind(dto));
     }
 
-    @PostMapping("/teste-geo-reversa")
-    public ResponseEntity<ReverseGeocodingApiDto> testeReverseGeo(@RequestBody LocalizacaoDto dto){
-        return ResponseEntity.ok(localizacaoService.testeGeoReversa(dto));
-    }
-
-    @PostMapping("/teste-geo")
-    public ResponseEntity<GeocodingApiDto> testeGeo(@RequestBody String endereco){
-        return ResponseEntity.ok(localizacaoService.testeGeo(endereco));
-    }
+//    @PostMapping("/teste-geo-reversa")
+//    public ResponseEntity<ReverseGeocodingApiDto> testeReverseGeo(@RequestBody LocalizacaoDto dto){
+//        return ResponseEntity.ok(localizacaoService.testeGeoReversa(dto));
+//    }
+//
+//    @PostMapping("/teste-geo")
+//    public ResponseEntity<GeocodingApiDto> testeGeo(@RequestBody String endereco){
+//        return ResponseEntity.ok(localizacaoService.testeGeo(endereco));
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Localizacao> update(@RequestBody LocalizacaoDto dto, @PathVariable Long id){
@@ -58,4 +59,5 @@ public class LocalizacaoController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
+
 

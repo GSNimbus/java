@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cidades")
+@RequestMapping("/cidade")
 @RequiredArgsConstructor
 @Tag(name = "Cidades", description = "Endpoints para gerenciamento de cidades")
 public class CidadeController {

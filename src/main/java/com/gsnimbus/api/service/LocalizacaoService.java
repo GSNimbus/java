@@ -4,6 +4,7 @@ import com.gsnimbus.api.dto.geocoding.GeocodingApiDto;
 import com.gsnimbus.api.dto.geocoding.ReverseGeocodingApiDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoMapper;
+import com.gsnimbus.api.dto.localizacao.LocalizacaoNovaProjection;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
 import com.gsnimbus.api.model.*;
 import com.gsnimbus.api.repository.LocalizacaoRepository;
@@ -13,6 +14,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 @Service
@@ -28,13 +31,13 @@ public class LocalizacaoService {
 
     @Cacheable(value = "findAllLocalizacao")
     @Transactional(readOnly = true)
-    public List<Localizacao> findAll(){
+    public List<Localizacao> findAll() {
         return localizacaoRepository.findAll();
     }
 
     @Cacheable(value = "findByIdLocalizacao", key = "#id")
     @Transactional(readOnly = true)
-    public Localizacao findById(Long id){
+    public Localizacao findById(Long id) {
         return localizacaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Localização não encontrada!"));
     }
 
@@ -44,17 +47,13 @@ public class LocalizacaoService {
     }
 
     @Transactional
-    public Localizacao saveOrFind(LocalizacaoDto dto){
-        Localizacao localizacaoSalva = findByLocalizacao(dto);
-        if (localizacaoSalva != null) {
-            return localizacaoSalva;
-        }
+    public LocalizacaoNovaProjection saveOrFind(LocalizacaoDto dto) {
         ReverseGeocodingApiDto reverseGeocodingApiDto = geocodingService.getAddressFromLocation(dto);
         String bairroApi = reverseGeocodingApiDto.getAddress().getSuburb();
         Bairro bairro = bairroService.findByName(bairroApi);
 
-        if (bairro != null){
-            return bairro.getIdLocalizacao();
+        if (bairro != null) {
+            return new LocalizacaoNovaProjection(bairro);
         }
 
         Pais pais = paisService.saveOrFind(reverseGeocodingApiDto.getAddress().getCountry());
@@ -62,7 +61,8 @@ public class LocalizacaoService {
         Cidade cidade = cidadeService.saveOrFind(reverseGeocodingApiDto.getAddress().getCity(), estado.getIdEstado());
         Localizacao localizacao = save(dto);
         bairro = bairroService.save(bairroApi, cidade.getIdCidade(), localizacao.getId());
-        return localizacao;
+        cleanCache();
+        return new LocalizacaoNovaProjection(bairro);
     }
 
     @Transactional
@@ -72,16 +72,24 @@ public class LocalizacaoService {
     }
 
 
-    public ReverseGeocodingApiDto testeGeoReversa(LocalizacaoDto dto){
+    public ReverseGeocodingApiDto testeGeoReversa(LocalizacaoDto dto) {
         return geocodingService.getAddressFromLocation(dto);
     }
 
-    public GeocodingApiDto testeGeo(String endereco) {
-        return geocodingService.getCoordinatesFromAddress(endereco);
+    @Transactional
+    public Localizacao saveLocalizacaoWithGeocoding(String endereco) {
+        cleanCache();
+        GeocodingApiDto geocodingApiDto = geocodingService.getCoordinatesFromAddress(endereco);
+
+        LocalizacaoDto localizacaoDto = new LocalizacaoDto(
+                new BigDecimal(geocodingApiDto.getLon()).setScale(5, RoundingMode.HALF_UP),
+                new BigDecimal(geocodingApiDto.getLat()).setScale(5, RoundingMode.HALF_UP)
+        );
+        return save(localizacaoDto);
     }
 
     @Transactional
-    public Localizacao update(LocalizacaoDto dto, Long id){
+    public Localizacao update(LocalizacaoDto dto, Long id) {
         cleanCache();
         Localizacao localizacao = findById(id);
         localizacaoMapper.updateEntityFromDto(dto, localizacao);
@@ -89,7 +97,7 @@ public class LocalizacaoService {
     }
 
     @Transactional
-    public void delete(Long id){
+    public void delete(Long id) {
         cleanCache();
         Localizacao localizacao = findById(id);
         localizacaoRepository.delete(localizacao);
@@ -98,7 +106,7 @@ public class LocalizacaoService {
     @CacheEvict(value = {
             "findAllLocalizacao", "findByIdLocalizacao"
     }, allEntries = true)
-    public void cleanCache(){
+    public void cleanCache() {
         System.out.println("Limpando cache de localização...");
     }
 

@@ -2,7 +2,6 @@ package com.gsnimbus.api.controller;
 
 import java.util.List;
 
-import com.gsnimbus.api.service.events.BairroCriadoEvent;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,16 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.gsnimbus.api.dto.endereco.bairro.BairroDto;
 import com.gsnimbus.api.model.Bairro;
-import com.gsnimbus.api.service.AlertaAIService;
-import com.gsnimbus.api.service.AlertaBairroService;
 import com.gsnimbus.api.service.BairroService;
-import com.gsnimbus.api.service.PrevisaoApiService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/bairros")
+@RequestMapping("/bairro")
 @RequiredArgsConstructor
 @Tag(name = "Bairros", description = "Endpoints para gerenciamento de bairros")
 public class BairroController {

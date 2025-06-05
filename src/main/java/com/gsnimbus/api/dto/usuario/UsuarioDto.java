@@ -7,6 +7,5 @@ public class UsuarioDto {
     private String username;
     private String password;
     private String email;
-    private Long idEndereco;
 }
 

@@ -18,7 +18,4 @@ public class Usuario {
     private String email;
     @Column(name = "nm_senha")
     private String password;
-    @OneToOne
-    @JoinColumn(name = "id_endereco")
-    private Endereco endereco;
 }
