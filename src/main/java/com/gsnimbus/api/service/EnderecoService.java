@@ -3,6 +3,7 @@ package com.gsnimbus.api.service;
 import com.gsnimbus.api.dto.endereco.EnderecoDto;
 import com.gsnimbus.api.dto.endereco.EnderecoMapper;
 import com.gsnimbus.api.dto.endereco.NovoEnderecoDto;
+import com.gsnimbus.api.dto.endereco.bairro.BairroDto;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
 import com.gsnimbus.api.model.*;
 import com.gsnimbus.api.repository.EnderecoRepository;
@@ -48,7 +49,8 @@ public class EnderecoService {
         Pais pais = paisService.saveOrFind(dto.getPais());
         Estado estado = estadoService.saveOrFind(dto.getEstado(), pais.getIdPais());
         Cidade cidade = cidadeService.saveOrFind(dto.getCidade(), estado.getIdEstado());
-        Bairro bairro = bairroService.save(dto.getBairro(), cidade.getIdCidade(), localizacao.getId());
+        Bairro bairro = bairroService.saveOrFind(new BairroDto(dto.getBairro(), cidade.getIdCidade(), localizacao.getId()));
+//        Bairro bairro = bairroService.save(dto.getBairro(), cidade.getIdCidade(), localizacao.getId());
         EnderecoDto enderecoDto = new EnderecoDto(dto.getNomeLogradouro(), dto.getNumLogradouro(), bairro.getId(), dto.getCep());
         return enderecoRepository.save(enderecoMapper.toEntity(enderecoDto));
     }

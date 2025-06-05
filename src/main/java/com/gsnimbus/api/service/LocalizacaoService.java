@@ -4,6 +4,7 @@ import com.gsnimbus.api.dto.geocoding.GeocodingApiDto;
 import com.gsnimbus.api.dto.geocoding.ReverseGeocodingApiDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoMapper;
+import com.gsnimbus.api.dto.localizacao.LocalizacaoNovaProjection;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
 import com.gsnimbus.api.model.*;
 import com.gsnimbus.api.repository.LocalizacaoRepository;
@@ -46,17 +47,13 @@ public class LocalizacaoService {
     }
 
     @Transactional
-    public Localizacao saveOrFind(LocalizacaoDto dto) {
-        Localizacao localizacaoSalva = findByLocalizacao(dto);
-        if (localizacaoSalva != null) {
-            return localizacaoSalva;
-        }
+    public LocalizacaoNovaProjection saveOrFind(LocalizacaoDto dto) {
         ReverseGeocodingApiDto reverseGeocodingApiDto = geocodingService.getAddressFromLocation(dto);
         String bairroApi = reverseGeocodingApiDto.getAddress().getSuburb();
         Bairro bairro = bairroService.findByName(bairroApi);
 
         if (bairro != null) {
-            return bairro.getIdLocalizacao();
+            return new LocalizacaoNovaProjection(bairro);
         }
 
         Pais pais = paisService.saveOrFind(reverseGeocodingApiDto.getAddress().getCountry());
@@ -65,7 +62,7 @@ public class LocalizacaoService {
         Localizacao localizacao = save(dto);
         bairro = bairroService.save(bairroApi, cidade.getIdCidade(), localizacao.getId());
         cleanCache();
-        return localizacao;
+        return new LocalizacaoNovaProjection(bairro);
     }
 
     @Transactional

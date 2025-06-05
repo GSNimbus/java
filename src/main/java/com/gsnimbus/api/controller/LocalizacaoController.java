@@ -3,6 +3,7 @@ package com.gsnimbus.api.controller;
 import com.gsnimbus.api.dto.geocoding.GeocodingApiDto;
 import com.gsnimbus.api.dto.geocoding.ReverseGeocodingApiDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoDto;
+import com.gsnimbus.api.dto.localizacao.LocalizacaoNovaProjection;
 import com.gsnimbus.api.model.Localizacao;
 import com.gsnimbus.api.service.LocalizacaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,7 +34,7 @@ public class LocalizacaoController {
 
 
     @PostMapping
-    public ResponseEntity<Localizacao> saveOrFind(@RequestBody LocalizacaoDto dto) {
+    public ResponseEntity<LocalizacaoNovaProjection> saveOrFind(@RequestBody LocalizacaoDto dto) {
         return ResponseEntity.status(HttpStatus.OK).body(localizacaoService.saveOrFind(dto));
     }
 
