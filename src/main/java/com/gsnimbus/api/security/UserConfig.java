@@ -24,10 +24,10 @@ public class UserConfig {
     UserDetailsService generateUser() {
 
         return username -> {
-            Usuario usuario = usuarioRepository.findByUsername(username)
+            Usuario usuario = usuarioRepository.findByEmail(username)
                     .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado na base dados"));
 
-            return User.builder().username(usuario.getUsername())
+            return User.builder().username(usuario.getEmail())
                     .password(usuario.getPassword())
                     .roles("USER")
                     .build();

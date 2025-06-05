@@ -21,7 +21,7 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
-     private final PasswordEncoder passwordEncoder; // Descomente se for usar codificação de senha
+     private final PasswordEncoder passwordEncoder;
 
     @Cacheable(value = "findAllUsuario")
     @Transactional(readOnly = true)
