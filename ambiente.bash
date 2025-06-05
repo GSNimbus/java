@@ -19,6 +19,7 @@ docker run -d \
   --name oracle-nimbus \
   -p 1521:1521 \
   -p 5500:5500 \
+  -v oracle-nimbus-volume:/opt/oracle/oradata \
   --network nimbus-network \
   -e ORACLE_SID=XE \
   -e ORACLE_PDB=nimbuspdb \
