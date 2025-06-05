@@ -1,5 +1,6 @@
 package com.gsnimbus.api.service.events;
 
+import com.gsnimbus.api.dto.previsao.api.PrevisaoDTO;
 import com.gsnimbus.api.model.Previsao;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
