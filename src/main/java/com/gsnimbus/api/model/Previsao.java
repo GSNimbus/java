@@ -30,5 +30,15 @@ public class Previsao {
     @Column(name = "nr_umidade")
     private Long relativeHumidity2M;
 
+    @Column(name = "nr_temperatura_aparente")
+    private Double apparentTemperature;
+
+    @Column(name = "nr_pressao_superficie")
+    private Double surfacePressure;
+
+    @ManyToOne
+    @JoinColumn(name = "id_bairro")
+    private Bairro idBairro;
+
 
 }

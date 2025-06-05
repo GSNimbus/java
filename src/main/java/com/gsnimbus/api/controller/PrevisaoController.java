@@ -1,15 +1,12 @@
 package com.gsnimbus.api.controller;
 
 import com.gsnimbus.api.dto.previsao.api.PrevisaoDTO;
-import com.gsnimbus.api.dto.previsao.api.PrevisaoMapper;
 import com.gsnimbus.api.model.Previsao;
-import com.gsnimbus.api.service.PrevisaoBairroService;
 import com.gsnimbus.api.service.PrevisaoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,10 +14,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/previsao")
 @RequiredArgsConstructor
+@Tag(name = "Previsões", description = "Endpoints para gerenciamento de previsões")
 public class PrevisaoController {
 
     private final PrevisaoService previsaoService;
-    private final PrevisaoBairroService previsaoBairroService;
 
 
     @GetMapping
@@ -35,7 +32,7 @@ public class PrevisaoController {
 
     @GetMapping("/bairro/{idBairro}")
     public ResponseEntity<Previsao> findLastPrevisaoPorBairro(@PathVariable Long idBairro) {
-        return ResponseEntity.ok(previsaoBairroService.findLastPrevisaoByBairro(idBairro));
+        return ResponseEntity.ok(previsaoService.findLastPrevisaoByBairro(idBairro));
     }
     @PostMapping
     public ResponseEntity<Previsao> save(@RequestBody PrevisaoDTO previsaoDTO){

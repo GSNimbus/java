@@ -22,6 +22,10 @@ public class Alerta {
     @Column(name = "horario_alerta")
     private LocalDateTime horarioAlerta;
 
+    @ManyToOne
+    @JoinColumn(name = "id_bairro")
+    private Bairro idBairro;
+
     @PrePersist
     protected void onCreate() {
         this.horarioAlerta = LocalDateTime.now(ZoneId.of("America/Sao_Paulo"));

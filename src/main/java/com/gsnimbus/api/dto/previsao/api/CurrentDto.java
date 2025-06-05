@@ -17,6 +17,8 @@ public record CurrentDto(
         @JsonProperty("weather_code") Long weatherCode,
         @JsonProperty("wind_speed_10m") Double windSpeed10M,
         @JsonProperty("wind_gusts_10m") Double windGusts10M,
-        @JsonProperty("relative_humidity_2m") Long relativeHumidity2M
+        @JsonProperty("relative_humidity_2m") Long relativeHumidity2M,
+        @JsonProperty("apparent_temperature") Double apparentTemperature,
+        @JsonProperty("surface_pressure") Double surfacePressure
 ) {
 }

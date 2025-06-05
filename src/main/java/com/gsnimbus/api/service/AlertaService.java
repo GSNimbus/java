@@ -11,6 +11,8 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -19,7 +21,6 @@ public class AlertaService {
     private final AlertaRepository alertaRepository;
     private final AlertaMapper alertaMapper;
 
-    private final PrevisaoBairroService previsaoBairroService;
 
     @Cacheable(value = "findAllAlerta")
     @Transactional(readOnly = true)
@@ -31,6 +32,20 @@ public class AlertaService {
     @Transactional(readOnly = true)
     public Alerta findById(Long id){
         return alertaRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Alerta não encontrado!"));
+    }
+
+    @Cacheable(value = "findAllAlertaByBairroToday", key = "#idBairro")
+    @Transactional(readOnly = true)
+    public List<Alerta> findAllAlertaByBairroToday(Long idBairro){
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
+        return alertaRepository.findAllByHorarioAlertaToday(startOfDay, endOfDay, idBairro);
+    }
+
+    @Cacheable(value = "findAllAlertaByBairro", key = "#idBairro")
+    @Transactional(readOnly = true)
+    public List<Alerta> findAllAlertaByBairro(Long idBairro) {
+        return alertaRepository.findAllAlertaByIdBairroId(idBairro);
     }
 
     @Transactional
@@ -56,17 +71,10 @@ public class AlertaService {
     }
 
     @CacheEvict(value = {
-            "findAllAlerta", "findByIdAlerta"
+            "findAllAlerta", "findByIdAlerta", "findAllAlertaByBairroToday", "findAllAlertaByBairro"
     }, allEntries = true)
     public void cleanCache(){
         System.out.println("Limpando cache de alerta...");
     }
-
-    /**
-     * Gera um alerta automático para uma localização, obtendo a previsão mais recente associada a ela
-     * @param bairro Bairro para a qual gerar o alerta
-     * @return Alerta gerado
-     */
-
 
 }

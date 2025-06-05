@@ -3,12 +3,8 @@ package com.gsnimbus.api.service;
 import com.gsnimbus.api.dto.previsao.api.PrevisaoDTO;
 import com.gsnimbus.api.dto.previsao.api.PrevisaoMapper;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
-import com.gsnimbus.api.model.Bairro;
 import com.gsnimbus.api.model.Previsao;
-import com.gsnimbus.api.model.PrevisaoBairro;
-import com.gsnimbus.api.model.Localizacao;
 import com.gsnimbus.api.repository.PrevisaoRepository;
-import com.gsnimbus.api.repository.BairroRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,8 +19,6 @@ public class PrevisaoService {
 
     private final PrevisaoRepository previsaoRepository;
     private final PrevisaoMapper previsaoMapper;
-    private final PrevisaoBairroService previsaoBairroService;
-    private final BairroRepository bairroRepository;
 
     @Cacheable(value = "findAllPrevisao")
     @Transactional(readOnly = true)
@@ -38,17 +32,16 @@ public class PrevisaoService {
         return previsaoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Previsão não encontrada"));
     }
 
+    @Cacheable(value = "findLastPrevisaoByBairro", key = "#idBairro")
+    @Transactional(readOnly = true)
+    public Previsao findLastPrevisaoByBairro(Long idBairro) {
+        return previsaoRepository.findLastPrevisaoByBairro(idBairro);
+    }
+
     @Transactional
     public Previsao save(PrevisaoDTO dto){
         cleanCache();
         return previsaoRepository.save(previsaoMapper.toEntity(dto));
-    }
-
-    @Transactional
-    public Previsao save(PrevisaoDTO dto, Long idBairro){
-        Previsao previsao = previsaoRepository.save(previsaoMapper.toEntity(dto));
-        previsaoBairroService.save(previsao.getId(), idBairro);
-        return previsao;
     }
 
     @Transactional
@@ -68,10 +61,13 @@ public class PrevisaoService {
 
 
 
+
     @CacheEvict(value = {
-            "findAllPrevisao", "findByIdPrevisao"
+            "findAllPrevisao", "findByIdPrevisao", "findLastPrevisaoByBairro"
     })
     public void cleanCache(){
         System.out.println("Limpando cache...");
     }
+
+
 }

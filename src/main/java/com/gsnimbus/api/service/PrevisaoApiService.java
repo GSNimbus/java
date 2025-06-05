@@ -52,18 +52,15 @@ public class PrevisaoApiService {
         try {
             log.info("começando mapping de json...");
              previsaoDTO = MAPPER.readValue(response, PrevisaoDTO.class);
+             previsaoDTO.setIdBairro(bairro.getId());
         } catch (JsonProcessingException e) {
-            throw new ConversionErrorException("Erro ao converter o JSON!");
-        }
-
-        if (previsaoDTO == null) {
             throw new ConversionErrorException("Erro ao converter o JSON!");
         }
 
         log.info("Mapping bem-sucedido!");
         log.info("Salvando previsão no banco...");
         log.info("Objeto previsaoDTO: {} \n\n\n\n", previsaoDTO);
-        Previsao previsao = previsaoService.save(previsaoDTO, bairro.getId());
+        Previsao previsao = previsaoService.save(previsaoDTO);
         publisher.publishEvent(new PrevisaoCriadaEvent(previsao, bairro.getId()));
         return previsao;
     }
@@ -81,7 +78,7 @@ public class PrevisaoApiService {
         String baseUrl = "https://api.open-meteo.com/v1/forecast";
         String params = String.format(
                 "?latitude=%s&longitude=%s"
-                        + "&current=temperature_2m,relative_humidity_2m,precipitation,rain,"
+                        + "&current=temperature_2m,relative_humidity_2m,apparent_temperature,surface_pressure,precipitation,rain,"
                         + "wind_gusts_10m,wind_speed_10m,weather_code"
                         + "&timezone=%s",
                 localizacao.getLatitude(),

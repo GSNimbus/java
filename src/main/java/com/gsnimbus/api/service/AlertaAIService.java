@@ -6,8 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import com.gsnimbus.api.service.events.AlertaCriadoEvent;
-import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -27,10 +26,11 @@ import lombok.extern.log4j.Log4j2;
 public class AlertaAIService {
     private static final HttpClient CLIENT = HttpClient.newHttpClient();
     private static final ObjectMapper MAPPER = new ObjectMapper().setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-    private static final String ALERTA_API_URL = "http://localhost:5000/alerta";
+
+    @Value("${ia.url}")
+    private String ALERTA_API_URL;
 
     private final AlertaService alertaService;
-    private final ApplicationEventPublisher publisher;
 
     public Alerta processarAlerta(Previsao previsao, Long idBairro) {
         log.info("Iniciando processamento de alerta com IA...");
@@ -57,13 +57,12 @@ public class AlertaAIService {
             log.info("Convertendo resposta JSON para AlertaDTO...");
             alertaDTO = MAPPER.readValue(response, AlertaDTO.class);
             log.info("Objeto AlertaDTO: {}", alertaDTO);
+            alertaDTO.setIdBairro(idBairro);
         } catch (IOException e) {
             throw new ConversionErrorException("Erro ao converter resposta JSON para AlertaDTO: " + e.getMessage());
         }
 
-        Alerta alerta = alertaService.save(alertaDTO);
-        publisher.publishEvent(new AlertaCriadoEvent(alerta.getId(), idBairro));
-        return alerta;
+        return alertaService.save(alertaDTO);
     }
 
 

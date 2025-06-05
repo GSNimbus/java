@@ -1,6 +1,7 @@
 package com.gsnimbus.api.dto.alerta;
 
 import com.gsnimbus.api.model.Alerta;
+import com.gsnimbus.api.model.Bairro;
 import com.gsnimbus.api.model.Localizacao;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -20,6 +21,18 @@ public interface AlertaMapper {
     @Mapping(target = "horarioAlerta", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(AlertaDTO dto, @MappingTarget Alerta entity);
+
+    default Long mapBairroToId(Bairro bairro) {
+        return bairro != null ? bairro.getId() : null;
+    }
+
+    default Bairro mapIdToBairro(Long id){
+        if (id == null) return null;
+        Bairro bairro = new Bairro();
+        bairro.setId(id);
+        return bairro;
+    }
+
 
 }
 

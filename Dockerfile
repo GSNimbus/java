@@ -1,6 +1,6 @@
 # Etapa 1: build (com cache eficiente)
 FROM bellsoft/liberica-openjdk-alpine:21 AS builder
-ENV JAR_FILE=api-0.0.1-SNAPSHOT.jar
+ENV JAR_FILE api-0.0.1-SNAPSHOT.jar
 WORKDIR /app
 
 # Copia o Maven Wrapper e outros arquivos necessários
@@ -21,7 +21,7 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
 #CHAVE DE API DO LOCATIONIQ
-ENV CHAVE_API = pk.95814fcfc410c0ac594ef0125a69bbd0
+ENV CHAVE_API pk.95814fcfc410c0ac594ef0125a69bbd0
 
 EXPOSE 8080
 

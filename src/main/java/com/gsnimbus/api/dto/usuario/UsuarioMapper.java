@@ -7,15 +7,11 @@ import org.mapstruct.*;
 @Mapper(componentModel = "spring")
 public interface UsuarioMapper {
 
-    @Mapping(target = "endereco", source = "idEndereco")
     @Mapping(target = "id", ignore = true)
     Usuario toEntity(UsuarioDto dto);
 
-    @Mapping(target = "idEndereco", source = "endereco")
     UsuarioDto toDto(Usuario entity);
 
-    @Mapping(target = "endereco", source = "idEndereco")
-    @Mapping(target = "email", source = "email")
     @Mapping(target = "id", ignore = true)
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateEntityFromDto(UsuarioDto dto, @MappingTarget Usuario entity);
