@@ -1,6 +1,7 @@
 package com.gsnimbus.api.controller;
 
 import com.gsnimbus.api.dto.alerta.AlertaDTO;
+import com.gsnimbus.api.dto.alerta.AlertaProjectionUser;
 import com.gsnimbus.api.model.Alerta;
 import com.gsnimbus.api.service.AlertaService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -36,6 +37,11 @@ public class AlertaController {
     @GetMapping("/bairro/{idBairro}/hoje")
     public ResponseEntity<List<Alerta>> findAllAlertaByBairroToday(@PathVariable Long idBairro){
         return ResponseEntity.ok(alertaService.findAllAlertaByBairroToday(idBairro));
+    }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Alerta>> findAllAlertaByUserToday(@PathVariable Long idUsuario){
+        return ResponseEntity.ok(alertaService.findAllAlertaByUserToday(idUsuario));
     }
 
 

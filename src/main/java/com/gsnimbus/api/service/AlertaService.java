@@ -77,4 +77,9 @@ public class AlertaService {
         System.out.println("Limpando cache de alerta...");
     }
 
+    public List<Alerta> findAllAlertaByUserToday(Long idUsuario) {
+        LocalDateTime startOfDay = LocalDate.now().atStartOfDay();
+        LocalDateTime endOfDay = startOfDay.plusDays(1);
+        return alertaRepository.findAllAlertaByUserToday(idUsuario, startOfDay, endOfDay);
+    }
 }
