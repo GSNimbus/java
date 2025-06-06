@@ -3,6 +3,7 @@ package com.gsnimbus.api.service;
 import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoDto;
 import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoMapper;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
+import com.gsnimbus.api.model.Endereco;
 import com.gsnimbus.api.model.GrupoLocalizacao;
 import com.gsnimbus.api.repository.GrupoLocalizacaoRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +38,12 @@ public class GrupoLocalizacaoService {
         return grupoLocalizacaoRepository.findAllByUsuario_Id(idUsuario);
     }
 
+    @Cacheable(value = "findHomeUsuario", key = "idUsuario")
+    @Transactional(readOnly = true)
+    public Endereco findHomeUsuario(Long idUsuario) {
+        return grupoLocalizacaoRepository.findHomeUsuario(idUsuario);
+    }
+
     @Transactional
     public GrupoLocalizacao save(GrupoLocalizacaoDto dto){
         cleanCache();
@@ -59,9 +66,11 @@ public class GrupoLocalizacaoService {
     }
 
     @CacheEvict(value = {
-            "findAllGrupoLocalizacao", "findGrupoLocalizacaoById", "findAllByUsuario"
+            "findAllGrupoLocalizacao", "findGrupoLocalizacaoById", "findAllByUsuario", "findHomeUsuario"
     })
     public void cleanCache(){
         System.out.println("Limpando cache...");
     }
+
+
 }

@@ -1,6 +1,7 @@
 package com.gsnimbus.api.controller;
 
 import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoDto;
+import com.gsnimbus.api.model.Endereco;
 import com.gsnimbus.api.model.GrupoLocalizacao;
 import com.gsnimbus.api.service.GrupoLocalizacaoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -33,6 +34,11 @@ public class GrupoLocalizacaoController {
     @GetMapping("/usuario/{idUsuario}")
     public ResponseEntity<List<GrupoLocalizacao>> findAllByUsuario(@PathVariable Long idUsuario){
         return ResponseEntity.ok(grupoLocalizacaoService.findAllByUsuario(idUsuario));
+    }
+
+    @GetMapping("/casa/usuario/{idUsuario}")
+    public ResponseEntity<Endereco> findHomeUsuario(@PathVariable Long idUsuario){
+        return ResponseEntity.ok(grupoLocalizacaoService.findHomeUsuario(idUsuario));
     }
 
     @PostMapping
