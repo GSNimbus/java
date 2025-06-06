@@ -15,5 +15,8 @@ public interface AlertaRepository extends JpaRepository<Alerta, Long> {
     List<Alerta> findAllByHorarioAlertaToday(@Param("start") LocalDateTime start, @Param("end") LocalDateTime end, @Param("idBairro") Long idBairro);
 
     List<Alerta> findAllAlertaByIdBairroId(Long idBairro);
+
+    @Query("SELECT a FROM Alerta a WHERE a.idBairro IN (SELECT gl.endereco.idBairro FROM GrupoLocalizacao gl WHERE gl.usuario.id = :idUsuario) AND a.horarioAlerta >= :start AND a.horarioAlerta < :end")
+    List<Alerta> findAllAlertaByUserToday(@Param("idUsuario") Long idUsuario, @Param("start") LocalDateTime start, @Param("end") LocalDateTime end);
 }
 
