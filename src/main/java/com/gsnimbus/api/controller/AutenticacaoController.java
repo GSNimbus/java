@@ -1,6 +1,7 @@
 package com.gsnimbus.api.controller;
 
 import com.gsnimbus.api.dto.usuario.LoginDto;
+import com.gsnimbus.api.exception.UserNotAuthorizedException;
 import com.gsnimbus.api.security.JWTUtil;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,7 @@ public class AutenticacaoController {
             authenticationManager.authenticate(auth);
             return jwtUtil.buildToken(email);
         } catch (Exception e) {
-            return "Usuário ou senha inválidos";
+            throw new UserNotAuthorizedException("Usuário ou senha inválidos");
         }
     }
 

@@ -1,6 +1,5 @@
 package com.gsnimbus.api.exception;
 
-import io.jsonwebtoken.JwtException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -40,10 +39,21 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(TokenValidationException.class)
-    public ResponseEntity<String> handleTokenError(TokenValidationException e) {
+    public ResponseEntity<Object> handleTokenError(TokenValidationException e) {
+        Map<String, String> resposta = new HashMap<>();
+        resposta.put("error", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(e.getMessage());
+                .body(resposta);
+    }
+
+    @ExceptionHandler(UserNotAuthorizedException.class)
+    public ResponseEntity<Object> handleUserNotAuthorized(UserNotAuthorizedException e){
+        Map<String, String> resposta = new HashMap<>();
+        resposta.put("error", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(resposta);
     }
 
     @ExceptionHandler(UsernameNotFoundException.class)

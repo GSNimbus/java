@@ -6,12 +6,14 @@ import com.gsnimbus.api.model.Endereco;
 import com.gsnimbus.api.service.EnderecoService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/endereco")
 @RequiredArgsConstructor
@@ -36,7 +38,9 @@ public class EnderecoController {
 
     @PostMapping("/todo")
     public ResponseEntity<Endereco> save(@RequestBody NovoEnderecoDto dto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(enderecoService.saveFull(dto));
+        Endereco endereco = enderecoService.saveFull(dto);
+        log.info("Endereço: {}", endereco);
+        return ResponseEntity.status(HttpStatus.CREATED).body(endereco);
     }
 
     @PutMapping("/{id}")
