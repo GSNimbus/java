@@ -6,13 +6,17 @@ import com.gsnimbus.api.dto.localizacao.LocalizacaoDto;
 import com.gsnimbus.api.dto.localizacao.LocalizacaoNovaProjection;
 import com.gsnimbus.api.model.Localizacao;
 import com.gsnimbus.api.service.LocalizacaoService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import com.gsnimbus.api.model.Bairro;
 
 @RestController
 @RequestMapping("/localizacao")
@@ -34,7 +38,7 @@ public class LocalizacaoController {
 
 
     @PostMapping
-    public ResponseEntity<LocalizacaoNovaProjection> saveOrFind(@RequestBody LocalizacaoDto dto) {
+    public ResponseEntity<Bairro> saveOrFind(@RequestBody LocalizacaoDto dto) {
         return ResponseEntity.status(HttpStatus.OK).body(localizacaoService.saveOrFind(dto));
     }
 

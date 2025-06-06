@@ -21,18 +21,22 @@ import java.util.List;
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
-     private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
     @Cacheable(value = "findAllUsuario")
     @Transactional(readOnly = true)
-    public List<Usuario> findAll(){
+    public List<Usuario> findAll() {
         return usuarioRepository.findAll();
     }
 
     @Cacheable(value = "findByIdUsuario", key = "#id")
     @Transactional(readOnly = true)
-    public Usuario findById(Long id){
+    public Usuario findById(Long id) {
         return usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado!"));
+    }
+
+    public Usuario findByEmail(String email){
+        return usuarioRepository.findByEmail(email).orElse(null);
     }
 
     @Transactional
@@ -44,18 +48,18 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario update(UsuarioDto dto, Long id){
+    public Usuario update(UsuarioDto dto, Long id) {
         cleanCache();
         Usuario usuario = findById(id);
-         if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
-             usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
-         }
+        if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+            usuario.setPassword(passwordEncoder.encode(dto.getPassword()));
+        }
         usuarioMapper.updateEntityFromDto(dto, usuario);
         return usuarioRepository.save(usuario);
     }
 
     @Transactional
-    public void delete(Long id){
+    public void delete(Long id) {
         cleanCache();
         Usuario usuario = findById(id);
         usuarioRepository.delete(usuario);
@@ -64,7 +68,7 @@ public class UsuarioService {
     @CacheEvict(value = {
             "findAllUsuario", "findByIdUsuario"
     }, allEntries = true)
-    public void cleanCache(){
+    public void cleanCache() {
         System.out.println("Limpando cache de usuário...");
     }
 
