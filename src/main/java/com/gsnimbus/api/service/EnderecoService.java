@@ -8,6 +8,7 @@ import com.gsnimbus.api.exception.ResourceNotFoundException;
 import com.gsnimbus.api.model.*;
 import com.gsnimbus.api.repository.EnderecoRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class EnderecoService {
 
     private final EnderecoRepository enderecoRepository;
@@ -51,7 +53,9 @@ public class EnderecoService {
         Cidade cidade = cidadeService.saveOrFind(dto.getCidade(), estado.getIdEstado());
         Bairro bairro = bairroService.saveOrFind(new BairroDto(dto.getBairro(), cidade.getIdCidade(), localizacao.getId()));
 //        Bairro bairro = bairroService.save(dto.getBairro(), cidade.getIdCidade(), localizacao.getId());
+        log.info("Salvando bairro: {}", bairro);
         EnderecoDto enderecoDto = new EnderecoDto(dto.getNomeLogradouro(), dto.getNumLogradouro(), bairro.getId(), dto.getCep());
+        log.info("Salvando endereco: {}", enderecoDto);
         return enderecoRepository.save(enderecoMapper.toEntity(enderecoDto));
     }
 

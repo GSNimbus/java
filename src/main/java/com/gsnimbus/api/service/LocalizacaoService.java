@@ -1,22 +1,27 @@
 package com.gsnimbus.api.service;
 
-import com.gsnimbus.api.dto.geocoding.GeocodingApiDto;
-import com.gsnimbus.api.dto.geocoding.ReverseGeocodingApiDto;
-import com.gsnimbus.api.dto.localizacao.LocalizacaoDto;
-import com.gsnimbus.api.dto.localizacao.LocalizacaoMapper;
-import com.gsnimbus.api.dto.localizacao.LocalizacaoNovaProjection;
-import com.gsnimbus.api.exception.ResourceNotFoundException;
-import com.gsnimbus.api.model.*;
-import com.gsnimbus.api.repository.LocalizacaoRepository;
-import lombok.RequiredArgsConstructor;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.List;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.List;
+import com.gsnimbus.api.dto.geocoding.GeocodingApiDto;
+import com.gsnimbus.api.dto.geocoding.ReverseGeocodingApiDto;
+import com.gsnimbus.api.dto.localizacao.LocalizacaoDto;
+import com.gsnimbus.api.dto.localizacao.LocalizacaoMapper;
+import com.gsnimbus.api.exception.ResourceNotFoundException;
+import com.gsnimbus.api.model.Bairro;
+import com.gsnimbus.api.model.Cidade;
+import com.gsnimbus.api.model.Estado;
+import com.gsnimbus.api.model.Localizacao;
+import com.gsnimbus.api.model.Pais;
+import com.gsnimbus.api.repository.LocalizacaoRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -47,13 +52,13 @@ public class LocalizacaoService {
     }
 
     @Transactional
-    public LocalizacaoNovaProjection saveOrFind(LocalizacaoDto dto) {
+    public Bairro saveOrFind(LocalizacaoDto dto) {
         ReverseGeocodingApiDto reverseGeocodingApiDto = geocodingService.getAddressFromLocation(dto);
         String bairroApi = reverseGeocodingApiDto.getAddress().getSuburb();
         Bairro bairro = bairroService.findByName(bairroApi);
 
         if (bairro != null) {
-            return new LocalizacaoNovaProjection(bairro);
+            return bairro;
         }
 
         Pais pais = paisService.saveOrFind(reverseGeocodingApiDto.getAddress().getCountry());
@@ -62,7 +67,7 @@ public class LocalizacaoService {
         Localizacao localizacao = save(dto);
         bairro = bairroService.save(bairroApi, cidade.getIdCidade(), localizacao.getId());
         cleanCache();
-        return new LocalizacaoNovaProjection(bairro);
+        return bairro;
     }
 
     @Transactional

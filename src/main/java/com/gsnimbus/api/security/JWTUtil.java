@@ -38,9 +38,9 @@ public class JWTUtil {
                     .parseClaimsJws(token);
             return true;
         } catch (JwtException e) {
-            throw new TokenValidationException("Token inválido", e);
+            throw new TokenValidationException("Token inválido");
         } catch (IllegalArgumentException e){
-            throw new TokenValidationException("Token mal formado", e);
+            throw new TokenValidationException("Token mal formado");
         }
 
     }
