@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, Long> {
-    Optional<Pais> findByNmPais(String nome);
+    Optional<Pais> findByFirstNmPais(String nome);
 }
