@@ -45,9 +45,9 @@ public class GrupoLocalizacaoService {
     public CasaGrupoProjection findHomeUsuario(Long idUsuario) {
         List<CasaGrupoProjection> projections = grupoLocalizacaoRepository.findProjectionsByUsuarioIdOrderedById(idUsuario);
         if (projections.isEmpty()){
-            return null; // Ou lançar uma exceção se um resultado for sempre esperado
+            return null; 
         }
-        return projections.get(0); // Retorna o primeiro elemento da lista
+        return projections.get(0);
     }
 
     @Transactional
