@@ -1,5 +1,6 @@
 package com.gsnimbus.api.service;
 
+import com.gsnimbus.api.dto.localizacao.grupo.CasaGrupoProjection;
 import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoDto;
 import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoMapper;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
@@ -40,7 +41,7 @@ public class GrupoLocalizacaoService {
 
     @Cacheable(value = "findHomeUsuario", key = "idUsuario")
     @Transactional(readOnly = true)
-    public Endereco findHomeUsuario(Long idUsuario) {
+    public CasaGrupoProjection findHomeUsuario(Long idUsuario) {
         return grupoLocalizacaoRepository.findHomeUsuario(idUsuario);
     }
 

@@ -4,14 +4,18 @@ import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoDto;
 import com.gsnimbus.api.model.Endereco;
 import com.gsnimbus.api.model.GrupoLocalizacao;
 import com.gsnimbus.api.service.GrupoLocalizacaoService;
+
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import com.gsnimbus.api.dto.localizacao.grupo.CasaGrupoProjection;
 
 @RestController
 @RequestMapping("/grupo-localizacao")
@@ -37,8 +41,9 @@ public class GrupoLocalizacaoController {
     }
 
     @GetMapping("/casa/usuario/{idUsuario}")
-    public ResponseEntity<Endereco> findHomeUsuario(@PathVariable Long idUsuario){
-        return ResponseEntity.ok(grupoLocalizacaoService.findHomeUsuario(idUsuario));
+    public ResponseEntity<CasaGrupoProjection> findHomeUsuario(@PathVariable Long idUsuario){
+        CasaGrupoProjection grupoLocalizacao = grupoLocalizacaoService.findHomeUsuario(idUsuario);
+        return ResponseEntity.ok(grupoLocalizacao);
     }
 
     @PostMapping

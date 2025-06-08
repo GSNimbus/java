@@ -10,7 +10,7 @@ import com.gsnimbus.api.model.Localizacao;
 
 @Repository
 public interface BairroRepository extends JpaRepository<Bairro, Long> {
-    Optional<Bairro> findByNomeIgnoreCase(String nomeBairro);
+    Optional<Bairro> findFirstByNomeIgnoreCase(String nomeBairro);
 
     // Busca um bairro pela sua localização
     Bairro findByIdLocalizacao(Localizacao localizacao);
