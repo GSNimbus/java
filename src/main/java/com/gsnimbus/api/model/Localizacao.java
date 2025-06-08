@@ -19,6 +19,7 @@ import lombok.Data;
 public class Localizacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_localizacao")
     private Long id;
 
     @Digits(integer = 3, fraction = 5)

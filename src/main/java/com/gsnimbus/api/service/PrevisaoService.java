@@ -38,6 +38,12 @@ public class PrevisaoService {
         return previsaoRepository.findLastPrevisaoByBairro(idBairro);
     }
 
+    @Cacheable(value = "findAllLastPrevisaoByBairro", key = "#idUsuario")
+    @Transactional(readOnly = true)
+    public List<Previsao> findAllLastPrevisaoByUsuario(Long idUsuario){
+        return previsaoRepository.findAllLastPrevisaoByUser(idUsuario);
+    }
+
     @Transactional
     public Previsao save(PrevisaoDTO dto){
         cleanCache();
@@ -63,7 +69,7 @@ public class PrevisaoService {
 
 
     @CacheEvict(value = {
-            "findAllPrevisao", "findByIdPrevisao", "findLastPrevisaoByBairro"
+            "findAllPrevisao", "findByIdPrevisao", "findLastPrevisaoByBairro", "findAllLastPrevisaoByBairro"
     })
     public void cleanCache(){
         System.out.println("Limpando cache...");

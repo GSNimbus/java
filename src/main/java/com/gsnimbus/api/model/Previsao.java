@@ -1,9 +1,17 @@
 package com.gsnimbus.api.model;
 
-import jakarta.persistence.*;
-import lombok.Data;
-
 import java.math.BigDecimal;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import lombok.Data;
 
 @Entity
 @Data
@@ -11,11 +19,14 @@ import java.math.BigDecimal;
 public class Previsao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_previsao")
     private Long id;
     @Column(name = "nm_hora")
     private String time;
     @Column(name = "nr_temperatura")
     private BigDecimal temperature2M;
+
+    @Transient
     @Column(name = "nr_precipitacao")
     private BigDecimal precipitation;
     @Column(name = "nr_chuva")

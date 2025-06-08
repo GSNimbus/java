@@ -20,7 +20,7 @@ public class JWTUtil {
         JwtBuilder builder = Jwts.builder()
                 .subject(username)
                 .issuedAt(actualDate)
-                .expiration(new Date(actualDate.getTime() + (3600000)))
+                .expiration(new Date(actualDate.getTime() + (1209600000L)))
                 .signWith(privateKey);
         return builder.compact();
     }
