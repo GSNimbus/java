@@ -35,7 +35,7 @@ public class PaisService {
 
     @Transactional(readOnly = true)
     public Pais findByName(String nome) {
-        return paisRepository.findByFirstNmPais(nome).orElse(null);
+        return paisRepository.findFirstByNmPais(nome).orElse(null);
     }
 
     @Transactional
