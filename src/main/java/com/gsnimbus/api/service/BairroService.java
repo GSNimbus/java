@@ -1,5 +1,14 @@
 package com.gsnimbus.api.service;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.gsnimbus.api.dto.endereco.bairro.BairroDto;
 import com.gsnimbus.api.dto.endereco.bairro.BairroMapper;
 import com.gsnimbus.api.exception.ResourceNotFoundException;
@@ -10,16 +19,9 @@ import com.gsnimbus.api.repository.BairroRepository;
 import com.gsnimbus.api.repository.CidadeRepository;
 import com.gsnimbus.api.repository.LocalizacaoRepository;
 import com.gsnimbus.api.service.events.BairroCriadoEvent;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.ApplicationEventPublisher;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,7 +46,7 @@ public class BairroService {
     }
 
     public Bairro findByName(String nomeBairro){
-        return bairroRepository.findByNomeIgnoreCase(nomeBairro).orElse(null);
+        return bairroRepository.findFirstByNomeIgnoreCase(nomeBairro).orElse(null);
     }
 
 
@@ -53,7 +55,7 @@ public class BairroService {
         cleanCache();
         log.info("Começando save de bairro!");
         log.info("Bairro que será salvo ou achado: {}", dto.getNome());
-        Optional<Bairro> bairroExistente = bairroRepository.findByNomeIgnoreCase(dto.getNome());
+        Optional<Bairro> bairroExistente = bairroRepository.findFirstByNomeIgnoreCase(dto.getNome());
 
         if (bairroExistente.isPresent()) {
             log.info("Bairro achado!");

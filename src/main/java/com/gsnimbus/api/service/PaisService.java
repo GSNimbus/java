@@ -1,17 +1,19 @@
 package com.gsnimbus.api.service;
 
-import com.gsnimbus.api.dto.endereco.pais.PaisDto;
-import com.gsnimbus.api.dto.endereco.pais.PaisMapper;
-import com.gsnimbus.api.exception.ResourceNotFoundException;
-import com.gsnimbus.api.model.Pais;
-import com.gsnimbus.api.repository.PaisRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.gsnimbus.api.dto.endereco.pais.PaisDto;
+import com.gsnimbus.api.dto.endereco.pais.PaisMapper;
+import com.gsnimbus.api.exception.ResourceNotFoundException;
+import com.gsnimbus.api.model.Pais;
+import com.gsnimbus.api.repository.PaisRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class PaisService {
 
     @Transactional(readOnly = true)
     public Pais findByName(String nome) {
-        return paisRepository.findByNmPais(nome).orElse(null);
+        return paisRepository.findFirstByNmPais(nome).orElse(null);
     }
 
     @Transactional

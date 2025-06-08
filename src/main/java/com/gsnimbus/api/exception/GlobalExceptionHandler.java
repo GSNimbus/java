@@ -48,13 +48,24 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(UserNotAuthorizedException.class)
-    public ResponseEntity<Object> handleUserNotAuthorized(UserNotAuthorizedException e){
+    public ResponseEntity<Object> handleUserNotAuthorizedError(UserNotAuthorizedException e){
         Map<String, String> resposta = new HashMap<>();
         resposta.put("error", e.getMessage());
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(resposta);
     }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<Object> handleUserAlreadyExistsError(UserAlreadyExistsException e){
+        Map<String, String> resposta = new HashMap<>();
+        resposta.put("error", e.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(resposta);
+    }
+
+
 
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<String> handleUsernameNotFoundException(UsernameNotFoundException e) {

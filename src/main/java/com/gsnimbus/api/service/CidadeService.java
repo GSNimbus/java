@@ -1,17 +1,19 @@
 package com.gsnimbus.api.service;
 
-import com.gsnimbus.api.dto.endereco.cidade.CidadeDto;
-import com.gsnimbus.api.dto.endereco.cidade.CidadeMapper;
-import com.gsnimbus.api.exception.ResourceNotFoundException;
-import com.gsnimbus.api.model.Cidade;
-import com.gsnimbus.api.repository.CidadeRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.gsnimbus.api.dto.endereco.cidade.CidadeDto;
+import com.gsnimbus.api.dto.endereco.cidade.CidadeMapper;
+import com.gsnimbus.api.exception.ResourceNotFoundException;
+import com.gsnimbus.api.model.Cidade;
+import com.gsnimbus.api.repository.CidadeRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +35,7 @@ public class CidadeService {
 
     @Transactional(readOnly = true)
     public Cidade findByName(String nome) {
-        return cidadeRepository.findByNmCidade(nome).orElse(null);
+        return cidadeRepository.findFirstByNmCidade(nome).orElse(null);
     }
 
     @Transactional

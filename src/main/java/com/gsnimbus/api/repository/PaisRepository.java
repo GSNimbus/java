@@ -1,12 +1,13 @@
 package com.gsnimbus.api.repository;
 
-import com.gsnimbus.api.model.Pais;
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import com.gsnimbus.api.model.Pais;
 
 @Repository
 public interface PaisRepository extends JpaRepository<Pais, Long> {
-    Optional<Pais> findByNmPais(String nome);
+    Optional<Pais> findFirstByNmPais(String nome);
 }

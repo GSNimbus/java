@@ -1,18 +1,20 @@
 package com.gsnimbus.api.service;
 
-import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoDto;
-import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoMapper;
-import com.gsnimbus.api.exception.ResourceNotFoundException;
-import com.gsnimbus.api.model.Endereco;
-import com.gsnimbus.api.model.GrupoLocalizacao;
-import com.gsnimbus.api.repository.GrupoLocalizacaoRepository;
-import lombok.RequiredArgsConstructor;
+import java.util.List;
+
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import com.gsnimbus.api.dto.localizacao.grupo.CasaGrupoProjection;
+import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoDto;
+import com.gsnimbus.api.dto.localizacao.grupo.GrupoLocalizacaoMapper;
+import com.gsnimbus.api.exception.ResourceNotFoundException;
+import com.gsnimbus.api.model.GrupoLocalizacao;
+import com.gsnimbus.api.repository.GrupoLocalizacaoRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +42,12 @@ public class GrupoLocalizacaoService {
 
     @Cacheable(value = "findHomeUsuario", key = "idUsuario")
     @Transactional(readOnly = true)
-    public Endereco findHomeUsuario(Long idUsuario) {
-        return grupoLocalizacaoRepository.findHomeUsuario(idUsuario);
+    public CasaGrupoProjection findHomeUsuario(Long idUsuario) {
+        List<CasaGrupoProjection> projections = grupoLocalizacaoRepository.findProjectionsByUsuarioIdOrderedById(idUsuario);
+        if (projections.isEmpty()){
+            return null; 
+        }
+        return projections.get(0);
     }
 
     @Transactional
