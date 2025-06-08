@@ -1,6 +1,7 @@
 package com.gsnimbus.api.controller;
 
 import com.gsnimbus.api.dto.usuario.UsuarioDto;
+import com.gsnimbus.api.exception.UserAlreadyExistsException;
 import com.gsnimbus.api.model.Usuario;
 import com.gsnimbus.api.service.UsuarioService;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -19,6 +20,7 @@ public class UsuarioController {
 
     private final UsuarioService usuarioService;
 
+
     @GetMapping
     public ResponseEntity<List<Usuario>> findAll() {
         return ResponseEntity.ok(usuarioService.findAll());
@@ -31,6 +33,10 @@ public class UsuarioController {
 
     @PostMapping
     public ResponseEntity<Usuario> save(@RequestBody UsuarioDto dto) {
+        Usuario usuario = usuarioService.findByEmail(dto.getEmail());
+        if (usuario != null) {
+            throw new UserAlreadyExistsException("O email " + dto.getEmail() + "já tem uma conta!");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.save(dto));
     }
 

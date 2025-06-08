@@ -12,7 +12,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "t_nimbus_gp_localizacao")
+@Table(name = "t_nimbus_gp_endereco")
 public class GrupoLocalizacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
