@@ -5,5 +5,6 @@ public enum TipoAlerta {
     BAIXO_RISCO,
     MEDIO_RISCO,
     ALTO_RISCO,
-    SEM_RISCO_CHUVA
+    SEM_RISCO_CHUVA,
+    CHUVA_FORTE
 }
