@@ -34,6 +34,12 @@ public class PrevisaoController {
     public ResponseEntity<Previsao> findLastPrevisaoPorBairro(@PathVariable Long idBairro) {
         return ResponseEntity.ok(previsaoService.findLastPrevisaoByBairro(idBairro));
     }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public ResponseEntity<List<Previsao>> findAllLastPrevisaoByUsuario(@PathVariable Long idUsuario){
+        return ResponseEntity.ok(previsaoService.findAllLastPrevisaoByUsuario(idUsuario));
+    }
+
     @PostMapping
     public ResponseEntity<Previsao> save(@RequestBody PrevisaoDTO previsaoDTO){
         return ResponseEntity.status(HttpStatus.CREATED).body(previsaoService.save(previsaoDTO));

@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
         Map<String, String> resposta = new HashMap<>();
         resposta.put("error", e.getMessage());
         return ResponseEntity
-                .status(HttpStatus.UNAUTHORIZED)
+                .status(HttpStatus.FORBIDDEN)
                 .body(resposta);
     }
 
@@ -52,7 +52,7 @@ public class GlobalExceptionHandler {
         Map<String, String> resposta = new HashMap<>();
         resposta.put("error", e.getMessage());
         return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
+                .status(HttpStatus.UNAUTHORIZED)
                 .body(resposta);
     }
 
