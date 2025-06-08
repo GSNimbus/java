@@ -129,6 +129,160 @@ http://localhost:8080/swagger-ui.html
 
 ---
 
+## Testes
+
+Esta seção descreve alguns exemplos de requisições `curl` para testar os principais endpoints da API.
+
+**Observação:** Após o login, você precisará extrair o token JWT da resposta e usá-lo no cabeçalho `Authorization: Bearer <SEU_TOKEN_JWT>` para as requisições autenticadas. Substitua `<SEU_TOKEN_JWT>` pelo token obtido e `<ID_DO_GRUPO>` pelos IDs correspondentes.
+
+### Criar Usuário
+
+```bash
+curl -X POST http://localhost:8080/usuario \
+-H "Content-Type: application/json" \
+-d '{
+  "nome": "Usuário Teste",
+  "email": "teste@example.com",
+  "senha": "senhaSegura123"
+}'
+```
+
+### Autenticar Usuário (Login)
+
+```bash
+curl -X POST http://localhost:8080/autenticacao/login \
+-H "Content-Type: application/json" \
+-d '{
+  "email": "teste@example.com",
+  "senha": "senhaSegura123"
+}'
+```
+**Nota:** Copie o token JWT da resposta para usar nos próximos passos.
+
+### Criar Endereço Completo
+
+Este endpoint espera um objeto contendo os detalhes do endereço, incluindo bairro, cidade, estado e país.
+
+```bash
+curl -X POST http://localhost:8080/endereco/todo \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>" \
+-d '{
+  "logradouro": "Avenida Taruma",
+  "numLogradouro": "350",
+  "bairro": "Chacara Cruzeiro do Sul",
+  "cidade": "Sao Paulo",
+  "estado": "Sao Paulo",
+  "pais": "Brasil",
+  "cep": "03733000" 
+}'
+```
+
+### Listar Endereços
+
+```bash
+curl -X GET http://localhost:8080/endereco \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Listar Bairros
+
+```bash
+curl -X GET http://localhost:8080/bairro \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Listar Cidades
+
+```bash
+curl -X GET http://localhost:8080/cidade \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Listar Estados
+
+```bash
+curl -X GET http://localhost:8080/estado \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Listar Países
+
+```bash
+curl -X GET http://localhost:8080/pais \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Listar Previsões
+
+```bash
+curl -X GET http://localhost:8080/previsao \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Listar Alertas
+
+```bash
+curl -X GET http://localhost:8080/alerta \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Criar Grupo de Localização
+
+```bash
+curl -X POST http://localhost:8080/grupo-localizacao \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>" \
+-d '{
+  "nome": "Trabalho",
+  "idEndereco": <ID_ENDERECO_CRIADO>,
+  "idUsuario" : <ID_USUARIO_CRIADO>
+}'
+```
+**Nota:** Anote o ID do grupo criado para os próximos passos.
+
+### Listar Grupos de Localização
+
+```bash
+curl -X GET http://localhost:8080/grupo-localizacao \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Atualizar Grupo de Localização
+
+Substitua `<ID_DO_GRUPO>` pelo ID do grupo que deseja atualizar.
+
+```bash
+curl -X PUT http://localhost:8080/grupo-localizacao/<ID_DO_GRUPO> \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>" \
+-d '{
+  "nome": "Trabalho Principal",
+  "idEndereco": <ID_ENDERECO_CRIADO>,
+  "idUsuario" : <ID_USUARIO_CRIADO>
+}'
+```
+
+### Deletar Grupo de Localização
+
+Substitua `<ID_DO_GRUPO>` pelo ID do grupo que deseja deletar.
+
+```bash
+curl -X DELETE http://localhost:8080/grupo-localizacao/<ID_DO_GRUPO> \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+### Listar Grupos de Localização (após delete)
+
+Para verificar se o grupo foi removido.
+
+```bash
+curl -X GET http://localhost:8080/grupo-localizacao \
+-H "Authorization: Bearer <SEU_TOKEN_JWT>"
+```
+
+---
+
 ## Observações
 
 - Para rodar localmente sem Docker, será necessário ter o Oracle XE rodando e configurar a variável de ambiente `CHAVE_API`.
