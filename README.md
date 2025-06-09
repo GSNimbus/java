@@ -44,6 +44,8 @@ Com essa solução, é possível verificar o risco para locais específicos prev
 ## Observação
 Está sendo usado uma variável de env no dockerfile, para chave de api e também jar compilado.
 
+**No application.propperties, o ddl.auto está como none, porém deve ser alterado para create!**
+
 ## Como Executar Localmente
 
 ### 1. Pré-requisitos
