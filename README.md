@@ -35,6 +35,9 @@ Além disso, o usuário poderá adicionar grupos de localização, como a casa d
 Nimbus é uma solução para previsão de tempo e alerta de risco de desastre com inteligência artificial, usando pontos de localização por bairro.  
 Com essa solução, é possível verificar o risco para locais específicos previamente salvos pelo usuário.
 
+## Observação
+Está sendo usado uma variável de env no dockerfile, para chave de api e também jar compilado.
+
 ## Como Executar Localmente
 
 ### 1. Pré-requisitos
@@ -72,16 +75,43 @@ spring.datasource.password=senhaNimbus
 O serviço de IA utilizado pela API está disponível em:  
 https://github.com/GSNimbus/ia
 
-Siga as instruções do repositório para subir o serviço de IA em container Docker.
+Clone o repositório e dentro da pasta do repositório use esse comando:
 
-### 5. Configurando Variáveis de Ambiente
+```
+docker build -t nimbus-ai .
+```
 
-A API depende de uma chave da LocationIQ para geocoding.  
-Crie sua chave em: https://locationiq.com/  
-Defina a variável de ambiente `CHAVE_API` com sua chave LocationIQ antes de subir o container:
+Depois execute a imagem:
+```
+docker container run -d -p 5000:5000 --name nimbus-ai --network nimbus-network nimbus-ai 
+```
 
-```bash
-export CHAVE_API=<sua_chave_locationiq>
+### 5. Subindo serviço de banco
+
+Para executar o container de banco de dados oracle:
+
+**Observação: precisa estar logado em container-registry.oracle.com/database/express:latest**
+
+Logue aqui: 
+
+```
+docker login container-registry.oracle.com
+```
+Logo após execute o comando abaixo:
+
+```
+docker run -d \          
+  --name oracle-nimbus \
+  -p 1521:1521 \
+  -p 5500:5500 \
+  -v oracle-nimbus-volume:/opt/oracle/oradata \
+  --network nimbus-network \
+  -e ORACLE_SID=XE \
+  -e ORACLE_PDB=nimbuspdb \
+  -e ORACLE_PWD=senhaNimbus \
+  -e ORACLE_CHARACTERSET=AL32UTF8 \
+  -e ENABLE_ARCHIVELOG=false \
+  container-registry.oracle.com/database/express:latest
 ```
 
 ### 6. Buildando e Subindo a API com Docker
@@ -92,15 +122,10 @@ O projeto já possui um `Dockerfile` pronto para build e execução. Para builda
 docker build -t nimbus-api .
 ```
 
-E para rodar o container:
-
-```bash
-docker run --rm -d -p 8080:8080 --name nimbus-api -e CHAVE_API=$CHAVE_API nimbus-api
-```
 Ou:
 
 ```bash
-docker run --rm -d -p 8080:8080 --name nimbus-api --env CHAVE_API=<CHAVE_INSERIDA_MANUALMENTE> nimbus-api
+docker run --rm -d -p 8080:8080 --name nimbus-api --network nimbus-network nimbus-api
 ```
 
 ### 7. Acessando a API
