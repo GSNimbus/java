@@ -20,7 +20,7 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
-ENV CHAVE_API=""
+ENV CHAVE_API="pk.95814fcfc410c0ac594ef0125a69bbd0"
 
 EXPOSE 8080
 
