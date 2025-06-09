@@ -44,7 +44,11 @@ Com essa solução, é possível verificar o risco para locais específicos prev
 ## Observação
 Está sendo usado uma variável de env no dockerfile, para chave de api e também jar compilado.
 
-**No application.propperties, o ddl.auto está como none, porém deve ser alterado para create!**
+**No application.propperties, o ddl.auto está como none, porém deve pode ser alterado para create, caso queira rodar sem as tabelas criadas.**
+
+Repositório de banco de dados:
+- [https://github.com/GSNimbus/bd](https://github.com/GSNimbus/bd)
+
 
 ## Como Executar Localmente
 
