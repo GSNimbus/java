@@ -14,7 +14,7 @@ Além disso, o usuário poderá adicionar grupos de localização, como a casa d
 - [https://www.youtube.com/watch?v=Cky07rBTRaE](https://www.youtube.com/watch?v=Cky07rBTRaE)
 
 ## Video demonstrativo (para entrega de java e entrega de devops)
-- [https://youtu.be/EK676Obg-t0](https://youtu.be/E8mxUHOxniM)
+- [https://youtu.be/E8mxUHOxniM?si=zL6wxUMDNP-93l3l](https://youtu.be/E8mxUHOxniM?si=zL6wxUMDNP-93l3l)
 
 ## Equipe
 
