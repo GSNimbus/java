@@ -57,23 +57,7 @@ git clone https://github.com/gsnimbus/java.git
 cd java
 ```
 
-### 3. Subindo o Banco de Dados Oracle XE
-
-O projeto utiliza o Oracle XE em container Docker. Para subir o banco, execute:
-
-```bash
-docker run -d --name oracle-nimbus -p 1521:1521 -e ORACLE_PWD=senhaNimbus gvenzl/oracle-xe:21.3.0-slim
-```
-
-As credenciais e URL padrão estão configuradas em `src/main/resources/application.properties`:
-
-```
-spring.datasource.url=jdbc:oracle:thin:@oracle-nimbus:1521:XE
-spring.datasource.username=system
-spring.datasource.password=senhaNimbus
-```
-
-### 4. Subindo o Serviço de Inteligência Artificial
+### 3. Subindo o Serviço de Inteligência Artificial
 
 O serviço de IA utilizado pela API está disponível em:  
 https://github.com/GSNimbus/ia
